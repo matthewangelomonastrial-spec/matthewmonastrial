@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <title>The Cozy Bean | Staff Portal</title>
+    <style>
+        :root { 
+            --espresso: #3d2b1f; 
+            --latte: #c0a080; 
+            --cream: #f5f5dc; 
+            --accent: #d4a373; 
+            --glass: rgba(61, 43, 31, 0.85);
+        }
+
+        body { 
+            margin: 0; 
+            font-family: 'Segoe UI', sans-serif; 
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                        url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=2070');
+            background-size: cover;
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: var(--cream);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        nav { 
+            background: rgba(30, 20, 15, 0.9); 
+            padding: 1rem; 
+            display: none; 
+            justify-content: center; 
+            gap: 20px; 
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--accent);
+        }
+
+        nav button { 
+            background: none; border: 1px solid var(--accent); 
+            color: var(--accent); padding: 8px 20px; 
+            cursor: pointer; border-radius: 20px; transition: 0.3s;
+        }
+
+        nav button:hover { background: var(--accent); color: var(--espresso); }
+
+        .view { display: none; padding: 2rem; flex: 1; flex-direction: column; align-items: center; justify-content: center; }
+        .active { display: flex; animation: fadeIn 0.5s ease; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            padding: 2.5rem;
+            border-radius: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        input {
+            padding: 15px; width: 80%; margin: 15px 0; border-radius: 10px;
+            border: 1px solid var(--latte); background: rgba(0,0,0,0.3); color: white;
+            text-align: center; font-size: 1.1rem;
+        }
+
+        .menu-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
+            gap: 15px; 
+            width: 100%; 
+            margin: 1.5rem 0;
+        }
+
+        .menu-item { 
+            background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 15px; 
+            border: 1px solid rgba(192, 160, 128, 0.3); cursor: pointer; transition: 0.2s;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        .menu-item:hover { background: rgba(255,255,255,0.1); transform: translateY(-3px); }
+        .menu-item.selected { background: var(--accent); color: var(--espresso); border-color: var(--cream); }
+
+        .btn-action { 
+            background: var(--accent); color: var(--espresso); 
+            padding: 15px 30px; border: none; border-radius: 30px; 
+            font-weight: bold; cursor: pointer; width: 100%; font-size: 1rem;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .success-icon { font-size: 4rem; color: #a3d4a3; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+    <nav id="main-nav">
+        <button onclick="showView('home-view')">Dashboard</button>
+        <button onclick="showView('menu-view')">Register</button>
+        <button onclick="logout()">Logout</button>
+    </nav>
+
+    <nav id="main-nav">
+    <div class="nav-logo">☕ THE COZY BEAN</div>
+    <div class="nav-links">
+        <button onclick="showView('home-view')">Dashboard</button>
+        <button onclick="showView('menu-view')">Register</button>
+        <button onclick="logout()">Logout</button>
+    </div>
+</nav>
+
+    <section id="login-view" class="view active">
+        <div class="glass-card">
+            <h1 style="color: var(--accent)">The Cozy Bean</h1>
+            <p>Staff Portal Access</p>
+            <input type="password" id="passInput" placeholder="Enter Staff Code">
+            <button class="btn-action" onclick="checkLogin()">Login</button>
+            <p id="error-msg" style="color: #ff6b6b; margin-top: 10px; display: none;">Incorrect Code</p>
+        </div>
+    </section>
+
+    <section id="home-view" class="view">
+        <div class="glass-card">
+            <h2 id="ad-banner" style="color: var(--accent);">★ Loading Special ★</h2>
+            <h1>Staff Dashboard</h1>
+            <p>Welcome back! Let's brew something great.</p>
+            <button class="btn-action" onclick="showView('menu-view')">New Transaction</button>
+        </div>
+    </section>
+
+    <section id="menu-view" class="view">
+        <div class="glass-card">
+            <h2>Coffee Menu</h2>
+            <div class="menu-grid">
+                <div class="menu-item" onclick="toggleItem(this, 'Latte', 4.50)"><span>🥛</span><strong>Latte</strong>$4.50</div>
+                <div class="menu-item" onclick="toggleItem(this, 'Mocha', 5.50)"><span>🍫</span><strong>Mocha</strong>$5.50</div>
+                <div class="menu-item" onclick="toggleItem(this, 'Espresso', 3.00)"><span>☕</span><strong>Espresso</strong>$3.00</div>
+                <div class="menu-item" onclick="toggleItem(this, 'Cold Brew', 4.00)"><span>🧊</span><strong>Cold Brew</strong>$4.00</div>
+                <div class="menu-item" onclick="toggleItem(this, 'Flat White', 5.00)"><span>☁️</span><strong>Flat White</strong>$5.00</div>
+                <div class="menu-item" onclick="toggleItem(this, 'Affogato', 6.50)"><span>🍦</span><strong>Affogato</strong>$6.50</div>
+            </div>
+            <h3 id="total-display" style="font-size: 1.8rem; margin: 10px 0;">Total: $0.00</h3>
+            <button class="btn-action" onclick="completeOrder()">Complete Order</button>
+        </div>
+    </section>
+
+    <section id="success-view" class="view">
+        <div class="glass-card">
+            <div class="success-icon">✓</div>
+            <h1 style="color: var(--accent)">ORDER COMPLETE</h1>
+            <p id="order-confirm-text"></p>
+            <button class="btn-action" onclick="resetRegister()">Next Customer</button>
+        </div>
+    </section>
+
+    <script>
+        let total = 0;
+        let selectedNames = [];
+
+        // THE PASSWORD LOGIC
+        function checkLogin() {
+            const userInput = document.getElementById('passInput').value;
+            const errorMsg = document.getElementById('error-msg');
+            
+            // Password is: bean123
+            if (userInput === "bean123") {
+                errorMsg.style.display = 'none';
+                document.getElementById('main-nav').style.display = 'flex';
+                showView('home-view');
+                fetchSpecial();
+            } else {
+                errorMsg.style.display = 'block';
+                document.getElementById('passInput').value = "";
+            }
+        }
+
+        function showView(id) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        async function fetchSpecial() {
+            try {
+                const res = await fetch('/api/special');
+                const data = await res.json();
+                document.getElementById('ad-banner').innerText = `★ Today's Pick: ${data.drink} ★`;
+            } catch (e) {
+                document.getElementById('ad-banner').innerText = "★ Ready to Brew ★";
+            }
+        }
+
+        function toggleItem(el, name, price) {
+            el.classList.toggle('selected');
+            if (el.classList.contains('selected')) {
+                total += price;
+                selectedNames.push(name);
+            } else {
+                total -= price;
+                selectedNames = selectedNames.filter(n => n !== name);
+            }
+            document.getElementById('total-display').innerText = `Total: $${Math.abs(total).toFixed(2)}`;
+        }
+
+        function completeOrder() {
+            if (total === 0) return alert("Please select a drink first!");
+            document.getElementById('order-confirm-text').innerText = `Processed: ${selectedNames.join(', ')}`;
+            showView('success-view');
+        }
+
+        function resetRegister() {
+            total = 0;
+            selectedNames = [];
+            document.getElementById('total-display').innerText = `Total: $0.00`;
+            document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('selected'));
+            showView('menu-view');
+        }
+
+        function logout() {
+            location.reload(); // Simplest way to lock the app again
+        }
+
+        // Allow pressing "Enter" key to login
+        document.getElementById('passInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkLogin();
+        });
+    </script>
+</body>
+</html>
