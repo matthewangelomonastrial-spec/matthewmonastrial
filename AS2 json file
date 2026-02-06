@@ -1,0 +1,24 @@
+const express = require('express');
+const path = require('path');
+const app = express();
+const PORT = 3000;
+
+app.use(express.static('public'));
+
+// Array of random specials
+const specials = [
+    { drink: "Vanilla Oat Milk Latte", price: "$5.50" },
+    { drink: "Caramel Macchiato", price: "$5.75" },
+    { drink: "Dark Roast Espresso", price: "$3.50" },
+    { drink: "Honey Almond Flat White", price: "$6.00" },
+    { drink: "Iced Pistachio Cream Cold Brew", price: "$6.25" }
+];
+
+app.get('/api/special', (req, res) => {
+    const randomDrink = specials[Math.floor(Math.random() * specials.length)];
+    res.json(randomDrink);
+});
+
+app.listen(PORT, () => {
+    console.log(`☕ Coffee server steaming at http://localhost:${PORT}`);
+});
