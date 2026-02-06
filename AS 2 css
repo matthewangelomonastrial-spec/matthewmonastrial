@@ -1,0 +1,57 @@
+nav { 
+    background: rgba(30, 20, 15, 0.7); /* Semi-transparent coffee brown */
+    padding: 0.8rem 2rem; 
+    display: none; /* Controlled by JavaScript */
+    justify-content: space-between; 
+    align-items: center;
+    position: sticky; 
+    top: 0; 
+    z-index: 1000; 
+    backdrop-filter: blur(15px); /* The "Glass" effect */
+    border-bottom: 1px solid rgba(212, 163, 115, 0.3);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+}
+
+.nav-logo {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--accent);
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.nav-links {
+    display: flex;
+    gap: 15px;
+}
+
+nav button { 
+    background: rgba(255, 255, 255, 0.05); 
+    border: 1px solid var(--accent); 
+    color: var(--accent); 
+    padding: 10px 22px; 
+    cursor: pointer; 
+    border-radius: 50px; /* Fully rounded pill shape */
+    transition: all 0.3s ease;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+nav button:hover { 
+    background: var(--accent); 
+    color: var(--espresso); 
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(212, 163, 115, 0.3);
+}
+
+/* Style for the Logout button specifically */
+nav button:last-child {
+    border-color: #ff6b6b;
+    color: #ff6b6b;
+}
+
+nav button:last-child:hover {
+    background: #ff6b6b;
+    color: white;
+}
